@@ -190,6 +190,7 @@
     <Content Include="Views\UserList\Index.cshtml" />
     <Content Include="Views\Wall\Index.cshtml" />
     <None Include="connections.config" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

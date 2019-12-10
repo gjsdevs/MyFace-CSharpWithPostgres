@@ -21,7 +21,7 @@ namespace MyFace.Middleware
             {
                 //TODO get password from the database.
                 string username = userNameAndPassword.Username.ToLower();
-               string thePassword = userRepo.GetPassword(username);
+                string thePassword = userRepo.GetPassword(username);
                 if (userNameAndPassword.Password == thePassword) return;
             }
             const string realm = "MyFace";

@@ -5,6 +5,10 @@
     <div class="limited-width-container">
         <h1>Welcome to My🙂Face</h1>
         <!--TODO Login should redirect to a login page-->
-        @Html.ActionLink($"Login", "Index", "UserList", "", new { @class = "button" })
-        @Html.ActionLink($"SignUp", "SignUp", "Account", "", new { @class = "button" })
+        
+        @if (!User.Identity.IsAuthenticated) {
+            @Html.ActionLink($"Login", "Login", "Account", "", new { @class = "button" })
+
+            @Html.ActionLink($"SignUp", "SignUp", "Account", "", new { @class = "button" })
+            }
     </div>

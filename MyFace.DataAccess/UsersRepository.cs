@@ -37,9 +37,10 @@ namespace MyFace.DataAccess
 
         public User GetSingleUser(string usernameToFind)
         {
+            usernameToFind = usernameToFind.ToLower();
             using (var db = ConnectionHelper.CreateSqlConnection())
             {
-                return db.Query<User>("Select username, fullname from user_accounts WHERE username = '" + usernameToFind + "'", new { usernameToFind }).SingleOrDefault();
+                return db.Query<User>("Select username, password, fullname from user_accounts WHERE username = '" + usernameToFind + "'", new { usernameToFind }).SingleOrDefault();
             }
         }
 

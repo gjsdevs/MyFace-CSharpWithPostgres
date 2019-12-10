@@ -44,7 +44,7 @@ namespace MyFace.Controllers
         [HttpPost]
         public ActionResult NewWall(WallViewModel wallViewModel)
         {
-            var username = AuthenticationHelper.ExtractUsernameAndPassword(Request).Username;
+            string username = User?.Identity?.Name; 
             User user = new User();
             User receiver = new User();
             //get user object from repositry by username to display user.fullname

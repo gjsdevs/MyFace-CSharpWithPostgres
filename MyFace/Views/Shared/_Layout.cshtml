@@ -1,7 +1,7 @@
 ﻿@using MyFace.Helpers
 <!DOCTYPE html>
 <html>
-@{ string username = AuthenticationHelper.ExtractUsernameAndPassword(request: Request)?.Username; }
+@{ string username = User?.Identity?.Name; }
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,12 +16,23 @@
         @Html.ActionLink($"My🙂Face", "Index", "Home", "",new { @class = "nav-link" })
         @if (!string.IsNullOrEmpty(username))
         {
-            @Html.ActionLink($"Users", "Index", "UserList", "",new { @class = "nav-link" })
-
-            <div class="nav-align-right">
-                @Html.ActionLink($"🙂 {username}", "Index", "Wall", new { username = username },new { @class = "nav-link" })
-            </div>
+            @Html.ActionLink($"Users", "Index", "UserList", "", new { @class = "nav-link" })
         }
+        <div class="nav-align-right">
+           @if (User.Identity.IsAuthenticated)
+            {
+                @Html.ActionLink($"🙂 {username}", "Index", "Wall", new { username = username }, new { @class = "nav-link" });
+                @Html.ActionLink("Logout", "Logout", "Account");
+            }
+            else
+            {
+                @Html.ActionLink("Login", "Login", "Account");
+            }
+
+
+
+        </div>
+        
     </div>
 </nav>
 @RenderBody()
