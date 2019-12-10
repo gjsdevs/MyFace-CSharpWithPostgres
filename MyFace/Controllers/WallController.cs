@@ -12,16 +12,32 @@ namespace MyFace.Controllers
     {
         private readonly IPostRepository postRepository;
 
-        public WallController(IPostRepository postRepository)
+        private readonly IUserRepository userRepository;
+
+        public WallController(IPostRepository postRepository, IUserRepository userRepository)
         {
             this.postRepository = postRepository;
+            this.userRepository = userRepository;
         }
+
+
+         
 
         // GET: Wall
         public ActionResult Index(string username)
         {
-            var posts = postRepository.GetPostsOnWall(username);
-            var viewModel = new WallViewModel(posts, username);
+            User user = new User();   
+            user = userRepository.GetSingleUser(username); 
+            var posts = postRepository.GetPostsOnWall(user.username); //gets posts on wall by username
+
+            foreach (var post in posts) //converts usernames on posts to fullnames on posts before displaying them.
+            {
+                User receiver = userRepository.GetSingleUser(post.Recipient);
+                post.Recipient = receiver.fullname;
+                User sender = userRepository.GetSingleUser(post.Sender);
+                post.Sender = sender.fullname;
+            }
+            var viewModel = new WallViewModel(posts, user);
             return View(viewModel);
         }
 
@@ -29,7 +45,13 @@ namespace MyFace.Controllers
         public ActionResult NewWall(WallViewModel wallViewModel)
         {
             var username = AuthenticationHelper.ExtractUsernameAndPassword(Request).Username;
-            postRepository.CreatePost(new Post() { Content = wallViewModel.NewPost, Recipient = wallViewModel.OwnerUsername, Sender = username });
+            User user = new User();
+            User receiver = new User();
+            //get user object from repositry by username to display user.fullname
+            user = userRepository.GetSingleUser(username);
+            receiver = userRepository.GetSingleUser(wallViewModel.OwnerUsername);
+            
+            postRepository.CreatePost(new Post() { Content = wallViewModel.NewPost, Recipient = receiver.username, Sender = user.username });
             return RedirectToAction("Index", new {username= wallViewModel.OwnerUsername});
         }
     }

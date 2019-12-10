@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyFace.DataAccess;
 using MyFace.Helpers;
 
 namespace MyFace.Middleware
@@ -10,6 +11,7 @@ namespace MyFace.Middleware
     //TODO Replace basic authentication with a better authentication method.
     public class BasicAuthenticationAttribute : ActionFilterAttribute
     {
+        UserRepository userRepo = new UserRepository();
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var req = filterContext.HttpContext.Request;
@@ -18,7 +20,8 @@ namespace MyFace.Middleware
             if (userNameAndPassword != null)
             {
                 //TODO get password from the database.
-                const string thePassword = "secret";
+                string username = userNameAndPassword.Username.ToLower();
+               string thePassword = userRepo.GetPassword(username);
                 if (userNameAndPassword.Password == thePassword) return;
             }
             const string realm = "MyFace";

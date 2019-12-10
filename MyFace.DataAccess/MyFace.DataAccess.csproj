@@ -79,6 +79,7 @@
     <Compile Include="ConnectionHelper.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="PostRepository.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="UsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
